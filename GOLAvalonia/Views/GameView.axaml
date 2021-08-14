@@ -1,0 +1,45 @@
+<reactiveUi:ReactiveUserControl x:TypeArguments="viewModels:GameViewModel" xmlns="https://github.com/avaloniaui"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                xmlns:reactiveUi="http://reactiveui.net"
+                          
+                                xmlns:viewModels="clr-namespace:ReactiveCore.ViewModels;assembly=ReactiveCore"
+                                mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                                x:Class="GOLAvalonia.Views.GameView">
+
+
+
+	<Grid>
+		<Grid.RowDefinitions>
+
+			<RowDefinition Height="*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+		 <StackPanel Orientation="Horizontal">
+             <Button Name="NextStateButton" Content="Next"/>
+			 <Button Name="ClearButton" Content="Clear"/>
+         </StackPanel>
+		
+        <ItemsControl  Grid.Row="1" Items="{Binding Tiles}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<ItemsControl  Items="{Binding }">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<reactiveUi:ViewModelViewHost Margin="2"  ViewModel="{Binding}"/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Grid>
+
+
+</reactiveUi:ReactiveUserControl>

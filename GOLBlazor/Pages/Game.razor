@@ -1,0 +1,36 @@
+﻿@page "/game"
+@using System.Reactive
+@inherits ReactiveUI.Blazor.ReactiveComponentBase<ReactiveCore.ViewModels.GameViewModel>
+<h3>Game</h3>
+ 
+
+ 
+
+<div id="Game" >
+    <button @onclick=@(()=> ViewModel.NextStateCommand.Execute(Unit.Default) )> Next</button>
+    <button @onclick=@(()=> ViewModel.ClearCommand.Execute(Unit.Default) )>Clear</button>
+@if(ViewModel?.Tiles is not null)
+    {
+       <table  >
+        
+            @foreach (var row in ViewModel.Tiles)
+            {
+                <tr>
+                    @foreach (var cell in row)
+                    {
+                        <td class="cell">
+                            <Tile TileViewModel="cell"></Tile>
+                        </td>
+                    }
+                </tr>
+                
+            }
+        </table> 
+    }
+    else {
+        <div>Trolled</div>
+    }
+
+        
+    
+</div>
