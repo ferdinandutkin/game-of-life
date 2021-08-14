@@ -2,7 +2,7 @@
 
 namespace Core.Models
 {
-    class Field : IField
+    public class Field : IField
     {
 
         public ITile[,] Table { get; private set; }

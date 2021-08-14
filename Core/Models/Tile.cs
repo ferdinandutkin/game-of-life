@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Models
 {
-    class Tile : ITile
+    public class Tile : ITile
     {
 
         public bool IsAlive { get; set; }

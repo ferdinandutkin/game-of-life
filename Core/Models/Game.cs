@@ -1,6 +1,6 @@
 ﻿namespace Core.Models
 {
-    class Game : IGame
+    public class Game : IGame
     {
 
         public IField Field { get; private set; }

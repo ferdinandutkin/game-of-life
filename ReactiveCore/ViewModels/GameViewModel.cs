@@ -11,12 +11,12 @@ namespace ReactiveCore.ViewModels
     public class GameViewModel : ViewModelBase
     {
         [Reactive] 
-        private ReactiveGame Model { get; set; }
+        public ReactiveGame Model { get; set; }
 
-        public ICommand NextStateCommand { get; }
+        public ICommand NextStateCommand { get; private set; }
 
 
-        public  ICommand ClearCommand { get; }
+        public  ICommand ClearCommand { get; private set; }
 
         public ObservableCollection<ObservableCollection<TileViewModel>> Tiles
         {
@@ -24,36 +24,72 @@ namespace ReactiveCore.ViewModels
             set;
         } = new();
 
-        void InitBindingTable()
+
+        void MapFieldToBindingTable()
         {
             for (int i = 0; i < Model.Field.Table.GetLength(0); i++)
             {
                 Tiles.Add(new());
                 for (int j = 0; j < Model.Field.Table.GetLength(1); j++)
                 {
-                    var cell   = new ReactiveTile() {IsAlive = new Random().Next(1, 4) == 2};
-
-                    Model.Field.Table[i, j] = cell;
-
-                    Tiles[i].Add(new TileViewModel(cell));
+                   
+                    Tiles[i].Add(new TileViewModel(Model.Field.Table[i, j] as ReactiveTile));
 
                 }
             }
         }
 
-        
-        public GameViewModel(ReactiveGame model = null)
+
+        void InitField()
         {
-            Model = model ?? 
-                    new ReactiveGame(
-                        new ReactiveField(
-                            new ReactiveTile[20, 20]));
 
-            InitBindingTable();
+            for (int i = 0; i < Model.Field.Table.GetLength(0); i++)
+            {
+                
+                for (int j = 0; j < Model.Field.Table.GetLength(1); j++)
+                {
+               
 
+                    Model.Field.Table[i, j] = new ReactiveTile() ;
+
+                   
+
+                }
+            }
+        }
+
+        private void InitCommands()
+        {
             NextStateCommand = ReactiveCommand.Create(Model.NextState);
 
             ClearCommand = ReactiveCommand.Create(Model.Field.Clear);
+        }
+
+
+        public GameViewModel()  
+        {
+            Model = new ReactiveGame( new ReactiveField(new ReactiveTile[20, 20]));
+
+            InitField();
+
+            MapFieldToBindingTable();
+
+            InitCommands();
+
+        }
+
+       
+      
+        public GameViewModel(ReactiveGame model)
+        {
+
+            Model = model;
+
+            MapFieldToBindingTable();
+
+            InitCommands();
+
+           
 
 
         }
