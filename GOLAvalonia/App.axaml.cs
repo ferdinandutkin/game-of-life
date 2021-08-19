@@ -1,8 +1,10 @@
+using System.Reactive.Concurrency;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using Avalonia.Threading;
 using GOLAvalonia.Models;
 using GOLAvalonia.ViewModels;
 using GOLAvalonia.Views;
@@ -21,9 +23,8 @@ namespace GOLAvalonia
         public override void OnFrameworkInitializationCompleted()
         {
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-
-            Locator.CurrentMutable.Register(() => new MainWindowViewModel());
-           
+            
+          
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
@@ -33,7 +34,7 @@ namespace GOLAvalonia
                 RxApp.SuspensionHost.SetupDefaultSuspendResume(new MainViewModelSuspensionDriver("appstate.json"));
                 suspension.OnFrameworkInitializationCompleted();
 
-                // Load the saved view model state.
+             
                 var state = RxApp.SuspensionHost.GetAppState<MainWindowViewModel>();
 
                 desktop.MainWindow = new MainWindow

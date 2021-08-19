@@ -19,6 +19,7 @@ namespace GOLAvalonia.Views
                 {
                     this.BindCommand(ViewModel, vm => vm.NextStateCommand, v => v.NextStateButton).DisposeWith(d);
                     this.BindCommand(ViewModel, vm => vm.ClearCommand, v => v.ClearButton).DisposeWith(d);
+                    this.BindCommand(ViewModel, vm => vm.ToggleRunningCommand, v => v.ToggleRunning).DisposeWith(d);
 
                 }
               );

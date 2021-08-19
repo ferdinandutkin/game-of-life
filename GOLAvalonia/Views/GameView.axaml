@@ -19,6 +19,7 @@
 		 <StackPanel Orientation="Horizontal">
              <Button Name="NextStateButton" Content="Next"/>
 			 <Button Name="ClearButton" Content="Clear"/>
+			 <Button Name="ToggleRunning" Content="ToggleRunning"/>
          </StackPanel>
 		
         <ItemsControl  Grid.Row="1" Items="{Binding Tiles}">

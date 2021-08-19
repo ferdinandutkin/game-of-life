@@ -6,13 +6,14 @@
 
  
 
-<div id="Game" >
-    <button @onclick=@(()=> ViewModel.NextStateCommand.Execute(Unit.Default) )> Next</button>
-    <button @onclick=@(()=> ViewModel.ClearCommand.Execute(Unit.Default) )>Clear</button>
-@if(ViewModel?.Tiles is not null)
+<div id="Game">
+    <button @onclick=@(()=> ViewModel.NextStateCommand.Execute(Unit.Default).Subscribe() )> Next</button>
+    <button @onclick=@(()=> ViewModel.ClearCommand.Execute(Unit.Default).Subscribe() )>Clear</button>
+    <button @onclick=@(()=> ViewModel.ToggleRunningCommand.Execute(Unit.Default).Subscribe() )>Toggle running</button>
+    @if (ViewModel?.Tiles is not null)
     {
-       <table  >
-        
+        <table>
+
             @foreach (var row in ViewModel.Tiles)
             {
                 <tr>
@@ -23,14 +24,15 @@
                         </td>
                     }
                 </tr>
-                
+
             }
-        </table> 
+        </table>
     }
-    else {
+    else
+    {
         <div>Trolled</div>
     }
 
-        
-    
+
+
 </div>
