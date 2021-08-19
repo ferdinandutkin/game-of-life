@@ -39,7 +39,7 @@ namespace ReactiveCore.ViewModels
 
  
 
-        public ViewModelActivator Activator { get; } = new ViewModelActivator();
+        public ViewModelActivator Activator { get; } = new  ();
 
         void MapFieldToBindingTable()
         {
@@ -50,7 +50,6 @@ namespace ReactiveCore.ViewModels
                 {
 
                     Tiles[i].Add(new TileViewModel(Model.Field.Table[i, j] as ReactiveTile));
-
                 }
             }
         }
@@ -65,35 +64,30 @@ namespace ReactiveCore.ViewModels
                 for (int j = 0; j < Model.Field.Table.GetLength(1); j++)
                 {
 
-
                     Model.Field.Table[i, j] = new ReactiveTile();
-
-
-
                 }
             }
         }
 
 
-        void ToggleRunning()
-        {
-            IsRunning = !IsRunning;
-        }
+        void ToggleRunning() => IsRunning = !IsRunning;
 
 
-        private void InitCommands()
+        private void InitObservablesAndCommands()
         {
-            NextStateCommand =  ReactiveCommand.Create(Model.NextState);
+            var isNotRunningObservable = this.WhenAnyValue(vm => vm.IsRunning).Select(isRunning => !isRunning);
+
+            NextStateCommand =  ReactiveCommand.Create(Model.NextState, isNotRunningObservable);
 
             ClearCommand = ReactiveCommand.Create(Model.Field.Clear);
 
             ToggleRunningCommand = ReactiveCommand.Create(ToggleRunning);
 
             this.WhenActivated(d =>
-               Observable.Interval(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler)
+               Observable.Interval(TimeSpan.FromSeconds(0.3), RxApp.MainThreadScheduler)
                .Where(_ => IsRunning)
                .Select(_ => Unit.Default)
-               .InvokeCommand(NextStateCommand)
+               .InvokeCommand(ReactiveCommand.Create(Model.NextState))
                .DisposeWith(d));
 
 
@@ -108,10 +102,7 @@ namespace ReactiveCore.ViewModels
 
             MapFieldToBindingTable();
 
-            InitCommands();
-
-
-
+            InitObservablesAndCommands();
 
         }
 
@@ -124,7 +115,7 @@ namespace ReactiveCore.ViewModels
 
             MapFieldToBindingTable();
 
-            InitCommands();
+            InitObservablesAndCommands();
 
 
 
