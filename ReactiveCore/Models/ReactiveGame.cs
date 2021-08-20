@@ -4,15 +4,18 @@ using ReactiveUI.Fody.Helpers;
 
 namespace ReactiveCore.Models
 {
-    public class ReactiveGame : ReactiveObject, IGame
+    public class ReactiveGame : ReactiveGameBase
     {
-        [Reactive]
-        public IField Field { get; set; }
-
-        public ReactiveGame(ReactiveField field)
-        {
-            Field = field;
+ 
+        public new ReactiveField Field 
+        { 
+            get => base.Field as ReactiveField;
+            set => base.Field = value; 
         }
+
+
+
+        public ReactiveGame(ReactiveField field) : base(field) => Field = field;
 
     }
 }

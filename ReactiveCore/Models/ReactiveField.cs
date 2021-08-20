@@ -4,14 +4,15 @@ using ReactiveUI.Fody.Helpers;
 
 namespace ReactiveCore.Models
 {
-    public class ReactiveField : ReactiveObject, IField
+    public class ReactiveField : ReactiveFieldBase
     {
-        [Reactive]
-        public ITile[,] Table { get; set; }
-
-        public ReactiveField(ReactiveTile[,] table)
-        {
-            Table = table;
+       
+        public new ReactiveTile[,] Table 
+        { 
+            get => base.Table as ReactiveTile[,]; 
+            set => base.Table = value; 
         }
+
+        public ReactiveField(ReactiveTile[,] table) : base(table) => Table = table;
     } 
 }

@@ -49,7 +49,7 @@ namespace ReactiveCore.ViewModels
                 for (int j = 0; j < Model.Field.Table.GetLength(1); j++)
                 {
 
-                    Tiles[i].Add(new TileViewModel(Model.Field.Table[i, j] as ReactiveTile));
+                    Tiles[i].Add(new (Model.Field.Table[i, j]));
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace ReactiveCore.ViewModels
                 for (int j = 0; j < Model.Field.Table.GetLength(1); j++)
                 {
 
-                    Model.Field.Table[i, j] = new ReactiveTile();
+                    Model.Field.Table[i, j] = new ();
                 }
             }
         }
