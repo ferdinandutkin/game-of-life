@@ -8,6 +8,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ReactiveCore.ViewModels;
+using System.Reactive.Concurrency;
+using Splat;
 
 namespace GOLBlazor
 {
@@ -17,6 +19,8 @@ namespace GOLBlazor
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+ 
+            Locator.CurrentMutable.RegisterConstant<IScheduler>(ThreadPoolScheduler.Instance);
 
             builder.Services.AddScoped(sp => new GameViewModel());
             

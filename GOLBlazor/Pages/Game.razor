@@ -7,7 +7,7 @@
  
 
 <div id="Game">
-    <button @onclick=@(()=> ViewModel.NextStateCommand.Execute(Unit.Default).Subscribe() )> Next</button>
+    <button disabled="@IsDisabled" @onclick=@(()=> ViewModel.NextStateCommand.Execute(Unit.Default).Subscribe() )> Next</button>
     <button @onclick=@(()=> ViewModel.ClearCommand.Execute(Unit.Default).Subscribe() )>Clear</button>
     <button @onclick=@(()=> ViewModel.ToggleRunningCommand.Execute(Unit.Default).Subscribe() )>Toggle running</button>
     @if (ViewModel?.Tiles is not null)

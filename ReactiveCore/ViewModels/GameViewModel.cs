@@ -12,6 +12,7 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace ReactiveCore.ViewModels
 {
@@ -73,6 +74,11 @@ namespace ReactiveCore.ViewModels
         void ToggleRunning() => IsRunning = !IsRunning;
 
 
+        IScheduler Scheduler
+        {
+            get; set;
+        }
+
         private void InitObservablesAndCommands()
         {
             var isNotRunningObservable = this.WhenAnyValue(vm => vm.IsRunning).Select(isRunning => !isRunning);
@@ -84,15 +90,29 @@ namespace ReactiveCore.ViewModels
             ToggleRunningCommand = ReactiveCommand.Create(ToggleRunning);
 
             this.WhenActivated(d =>
-               Observable.Interval(TimeSpan.FromSeconds(0.3), RxApp.MainThreadScheduler)
+               Observable.Interval(TimeSpan.FromSeconds(0.3),  Scheduler)
+    
                .Where(_ => IsRunning)
                .Select(_ => Unit.Default)
+                         
                .InvokeCommand(ReactiveCommand.Create(Model.NextState))
                .DisposeWith(d));
 
-
+           
         }
 
+
+        void InitScheduler() => Scheduler = Locator.Current.GetService<IScheduler>() ?? RxApp.MainThreadScheduler;
+
+        void BaseInit()
+        {
+
+            InitScheduler();
+
+            MapFieldToBindingTable();
+
+            InitObservablesAndCommands();
+        }
 
         public GameViewModel()
         {
@@ -100,22 +120,17 @@ namespace ReactiveCore.ViewModels
 
             InitField();
 
-            MapFieldToBindingTable();
-
-            InitObservablesAndCommands();
-
+            BaseInit();
         }
 
-
+      
 
         public GameViewModel(ReactiveGame model)
         {
 
             Model = model;
 
-            MapFieldToBindingTable();
-
-            InitObservablesAndCommands();
+            BaseInit();
 
 
 
